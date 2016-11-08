@@ -1,0 +1,3 @@
+module(SDCLK, Reset);
+	
+endmodule;
