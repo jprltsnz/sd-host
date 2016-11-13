@@ -7,19 +7,21 @@ module register_set #(
                       input logic                             clk,
                       input logic                             reset,
                       input logic                             wnr,
-                      input logic                             req,
+                      input logic [1:0]                       req,
                       input logic [ADDR_WIDTH-1:0]            address,
-                      input logic [DATA_WIDTH-1:0]            data_in,
+                      input logic [4*DATA_WIDTH-1:0]          data_in,
 
                     //Output ports
                       output logic                            ack,
-                      output logic [DATA_WIDTH-1:0]           data_out,
+                      output logic [4*DATA_WIDTH-1:0]         data_out,
                       output logic [DATA_WIDTH*MEM_DEPTH-1:0] mem_data_out
                                  );
 
    reg [DATA_WIDTH - 1: 0]    mem [0 : MEM_DEPTH - 1];
 
-//   integer                    j;
+/* -----\/----- EXCLUDED -----\/-----
+   integer                    j;
+ -----/\----- EXCLUDED -----/\----- */
    genvar                     i;
 
 
@@ -28,25 +30,52 @@ module register_set #(
    end
 
    always @(posedge clk) begin
-/*     if(reset) begin
+/* -----\/----- EXCLUDED -----\/-----
+     if(reset) begin
          for(j = 0; j < MEM_DEPTH; j = j+1) begin
             mem[j] <= 0;
          end
-      end */
-      ack = 0;
-      data_out = 0;
+      end
+ -----/\----- EXCLUDED -----/\----- */
+      ack <= 0;
+      data_out <= 0;
 
       if(wnr) begin
          if(req == 1) begin
-            mem[address] = data_in;
-            ack = 1;
+            mem[address] <= data_in[DATA_WIDTH-1:0];
+            ack <= 1;
+         end
+         if(req == 2) begin
+            mem[address] <= data_in[DATA_WIDTH-1:0];
+            mem[address+1] <= data_in[2*DATA_WIDTH-1:DATA_WIDTH];
+            ack <= 1;
+         end
+         if(req == 3) begin
+            mem[address] <= data_in[DATA_WIDTH-1:0];
+            mem[address+1] <= data_in[2*DATA_WIDTH-1:DATA_WIDTH];
+            mem[address+2] <= data_in[3*DATA_WIDTH-1:2*DATA_WIDTH];
+            mem[address+3] <= data_in[4*DATA_WIDTH-1:3*DATA_WIDTH];
+            ack <= 1;
          end
       end
       else begin
          if (req == 1) begin
-         data_out = mem[address];
-         ack = 1;
+         data_out[DATA_WIDTH-1:0] <= mem[address];
+         ack <= 1;
          end
+         if(req == 2) begin
+            data_out[DATA_WIDTH-1:0] <= mem[address];
+            data_out[2*DATA_WIDTH-1:DATA_WIDTH] <= mem[address+1];
+            ack <= 1;
+         end
+         if(req == 3) begin
+            data_out[DATA_WIDTH-1:0] <= mem[address];
+            data_out[2*DATA_WIDTH-1:DATA_WIDTH] <= mem[address+1];
+            data_out[3*DATA_WIDTH-1:2*DATA_WIDTH] <= mem[address+2];
+            data_out[4*DATA_WIDTH-1:3*DATA_WIDTH] <= mem[address+3];
+            ack <= 1;
+         end
+
       end
 
    end
