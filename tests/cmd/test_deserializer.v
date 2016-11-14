@@ -3,11 +3,13 @@
 module test_deserializer;
 
     reg reset = 1;
-    reg finish = 0;		
+    reg enable = 1;
+    wire complete;		
     reg in = 0;			//serialized input
-	wire [47:0] out;	//deserialized data
+	reg [7:0] framesize = 12;			//serialized input
+	wire [135:0] out;	//deserialized data
 	
-	reg [47:0] input_values = 48'b101011010111101011101011101010101010101001110100; // test input data
+	reg [135:0] input_values = 136'b1010101010101011010100100100101010100100101010101101010101010100101011010010101101101111010111010111010101010101101101010101101101010101; // test input data
 	reg [5:0] counter = 0;
 	
     initial begin
@@ -15,8 +17,9 @@ module test_deserializer;
 		$dumpfile("tests/vcd/test_deserializer.vcd");
 		$dumpvars(0, test_deserializer);
         # 2 reset = 0;  
-		# 96 finish = 1;	//out should remain the same for 2 cycles
-		# 4 reset = 1;
+		# 94 enable = 1;	//out should remain the same for 2 cycles
+		$display("Enabled\n");
+		# 26 reset = 1;
 		# 2 $finish;    
     end
 
@@ -27,8 +30,13 @@ module test_deserializer;
 		in <= input_values[counter];
 	end
 	
-	deserializer des (.clk(clk), .reset(reset), .in(in), .out(out), .finish(finish));
+	always@(posedge complete) begin
+		$display("Disabled\n");
+		enable = 0;
+	end
+	
+	deserializer des (.clk(clk), .reset(reset), .in(in), .out(out), .enable(enable), .complete(complete), .framesize(framesize));
     
-    initial	$monitor("At time %t: %b, out: %b", $time,in,out);
+	initial	$monitor("At time %t: %b, out: %b complete: %b", $time,in,out,complete);
 
 endmodule
