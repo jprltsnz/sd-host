@@ -7,7 +7,7 @@ module serializer(
 	
 	parameter BITS = 48;		//size of serializer
 	parameter BITS_COUNTER = 6;	//size of counter, must be at least log2(BITS)
-	
+
 	input clk, reset;
 	input [BITS-1:0] in;
 	
@@ -20,10 +20,14 @@ module serializer(
 	
 	
 	always@(posedge clk) begin
-		out <= in[counter];
-		if(~reset) begin			//as long we're not resetting the counter
-			counter = counter + 1;	//next item
+		if(enable && ~(counter==BITS)) begin	//when counter gets to limit, it'll stop counting until it's reset
+			out <= in[counter];
+			if(~reset) begin			//as long we're not resetting the counter
+				counter = counter + 1;	//next item
+			end
 		end
 	end
+	
+	
 	
 endmodule

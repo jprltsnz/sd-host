@@ -44,7 +44,7 @@ module deserializer(
 	end
 	
 	always@(complete) begin
-		counter = 0;	//this way there's no need to reset every time we start a transaction
+		counter = 0;	//this way there's no need to reset every time we start a transaction (resetting all out bits consumes power)
 	end
 	
 endmodule
