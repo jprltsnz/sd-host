@@ -3,6 +3,7 @@
 module test_serializer;
 
     reg reset = 1;
+    reg enable = 1;
 	reg [47:0] in = 48'b101011010111101011101011101010101010101001110101; // test input data
 	wire out;	//serialized output
 	
@@ -20,7 +21,7 @@ module test_serializer;
     reg clk = 0;
     always #1 clk = !clk;     
 	
-	serializer ser (.clk(clk), .reset(reset), .in(in), .out(out));
+	serializer ser (.enable(enable), .clk(clk), .reset(reset), .in(in), .out(out));
     
 	initial	$monitor("At time %t: clk: %b out: %b", $time,clk, out);
 

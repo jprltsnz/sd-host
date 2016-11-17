@@ -1,6 +1,7 @@
 module serializer(
 	clk, 		//clock to send serialized data on out line
 	reset, 		//reset counter to 0 on high
+	enable, 		//serialize while enable on high
 	in, 		//deserialized data
 	out 		//serialized data
 );
@@ -8,7 +9,7 @@ module serializer(
 	parameter BITS = 48;		//size of serializer
 	parameter BITS_COUNTER = 6;	//size of counter, must be at least log2(BITS)
 
-	input clk, reset;
+	input clk, reset, enable;
 	input [BITS-1:0] in;
 	
 	output reg out;
