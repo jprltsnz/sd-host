@@ -1,4 +1,4 @@
 Bidirectional pad
 -------------
 
-![alt tag](https://www.processon.com/embed/582dd2f1e4b0645c0eb498c2)
+![alt tag](https://github.com/jcrono/sd-host/raw/cmd/img/bidirectional_pad.png)
