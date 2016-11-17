@@ -2,7 +2,7 @@
 
 module test_deserializer;
 
-    reg reset = 1;
+    reg reset = 0;
     reg enable = 1;
     wire complete;		
     reg in = 0;			//serialized input
@@ -16,8 +16,9 @@ module test_deserializer;
 		$display("\n----------------------- Deserializer test -------------------------\n");
 		$dumpfile("tests/vcd/test_deserializer.vcd");
 		$dumpvars(0, test_deserializer);
+        # 2 reset = 1;  
         # 2 reset = 0;  
-		# 94 enable = 1;	//out should remain the same for 2 cycles
+		# 94 enable = 0;	//out should remain the same for 2 cycles
 		$display("Enabled\n");
 		# 26 reset = 1;
 		# 2 $finish;    

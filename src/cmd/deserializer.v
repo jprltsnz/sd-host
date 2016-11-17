@@ -18,7 +18,7 @@ module deserializer(
 	output reg [BITS-1:0] out;
 	reg [BITS_COUNTER-1:0] counter;	//we need to know which array item (out) to write on
 		
-	always@(reset) begin
+	always@(posedge reset) begin
 		out = 0;
 		counter = 0;
 		complete = 0;

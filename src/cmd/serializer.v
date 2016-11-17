@@ -1,7 +1,7 @@
 module serializer(
 	clk, 		//clock to send serialized data on out line
 	reset, 		//reset counter to 0 on high
-	enable, 		//serialize while enable on high
+	enable, 	//serialize while enable on high
 	in, 		//deserialized data
 	out 		//serialized data
 );
@@ -15,7 +15,7 @@ module serializer(
 	output reg out;
 	reg [BITS_COUNTER-1:0] counter;	//we need to know which array item (in) to read from
 		
-	always@(reset) begin
+	always@(posedge reset) begin
 		counter = 0;
 	end
 	
