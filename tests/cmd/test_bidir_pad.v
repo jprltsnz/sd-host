@@ -1,4 +1,4 @@
-`include "src/cmd/bidir_pad.v"
+`include "src/cmd/communication/bidir_pad.v"
 
 module test_bidir_pad;
 

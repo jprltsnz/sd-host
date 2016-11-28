@@ -1,4 +1,4 @@
-`include "src/cmd/deserializer.v"
+`include "src/cmd/communication/deserializer.v"
 
 module test_deserializer;
 
