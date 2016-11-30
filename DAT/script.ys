@@ -1,0 +1,23 @@
+
+read_verilog -sv DAT.v
+
+hierarchy -check -top DAT
+
+
+proc; opt;
+fsm; opt; 
+memory; opt
+
+techmap; opt
+
+dfflibmap -liberty cmos_cells.lib
+#home/isolis/Documentos/Digitales2/yosys-yosys-0.6/examples/cmos/cmos_cells.lib
+
+
+abc  -liberty  cmos_cells.lib
+#/home/isolis/Documentos/Digitales2/yosys-yosys-0.6/examples/cmos/cmos_cells.lib
+read_liberty cmos_cells.lib
+clean
+
+
+write_verilog DATsyn.v 
