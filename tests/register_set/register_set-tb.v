@@ -3,7 +3,9 @@
 module register_set_tb();
 // Wires
    logic [7:0] address;
-   logic [7:0] data_in;
+   logic [31:0] data_in;
+   logic [1:0]  req;
+
    initial begin
       $dumpfile("reg_set.vvp");
       $dumpvars(0, register_set_tb);
