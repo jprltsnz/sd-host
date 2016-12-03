@@ -40,13 +40,13 @@ module control_DAT(input logic writeRead,
   reg [5:0] next_state;
   reg [4:0] blockCount;
 
-
+  reg [4:0] blockCountFlip;
 
   //----------Seq Logic-----------------------------------------------------seqlogic------------------------------------------------\\\\
   always @ ( posedge clock ) begin
     if (reset == 1'b1) begin
       state <=    RESET;
-      blockCount<=5'b00000 ;
+  //  blockCount<=5'b00000 ;
     //  next_state<=6'b000000 ;
     end else begin
       state <=   next_state;
@@ -61,8 +61,8 @@ module control_DAT(input logic writeRead,
       reset_fisica<=1'b1;
       complete<=1'b0;
       IDLE_out<=1'b0;
-
-
+  //blockCount<=5'b00000 ;
+      blockCountFlip<=5'b00000 ;
     end
     else begin
       case(state)
@@ -73,7 +73,9 @@ module control_DAT(input logic writeRead,
           reset_fisica<=1'b0;
           complete<=1'b0;
           IDLE_out<=1'b0;
-          blockCount<=5'b00000 ;
+          blockCountFlip<=5'b00000 ;
+    //      blockCount<=5'b00000 ;
+      //    blockCount<=blockCount ;
         end////////////////////////////////////////////Final RESET
 
 
@@ -85,7 +87,9 @@ module control_DAT(input logic writeRead,
           reset_fisica<=1'b0;
           complete<=1'b0;
           IDLE_out<=1'b1;
-            blockCount<=5'b00000 ;
+          blockCountFlip<=5'b00000 ;
+  //        blockCount<=5'b00000 ;
+    //        blockCount<=blockCount ;
         end///////////////////////////////////////////Final IDLE
 
 
@@ -101,8 +105,10 @@ module control_DAT(input logic writeRead,
           reset_fisica<=1'b0;
           complete<=1'b0;
           IDLE_out<=1'b0;
-          blockCount<=  blockCount+5'b00001;
-
+          blockCountFlip<=blockCount ;
+      //    blockCount<=5'b00000 ;
+        //  blockCount=  blockCount+5'b00001;
+  //  blockCount<=blockCount+5'b11111 ;
 
         end
         solicitud : begin ///////////////////////////////////////solicitud
@@ -111,7 +117,8 @@ module control_DAT(input logic writeRead,
           reset_fisica<=1'b0;
           complete<=1'b0;
           IDLE_out<=1'b0;
-
+          blockCountFlip<=blockCount ;
+    //blockCount<=blockCount ;
 
 
         end
@@ -121,7 +128,8 @@ module control_DAT(input logic writeRead,
           reset_fisica<=1'b0;
           complete<=1'b0;
           IDLE_out<=1'b0;
-
+          blockCountFlip<=blockCount ;
+  //blockCount<=blockCount ;
 
         end
         waitIdle : begin
@@ -130,6 +138,8 @@ module control_DAT(input logic writeRead,
           reset_fisica<=1'b0;
           complete<=1'b1;
           IDLE_out<=1'b0;
+          blockCountFlip<=blockCount ;
+    //        blockCount<=blockCount ;
         end
         default : begin
           newService_fisica<=1'b0;
@@ -138,6 +148,8 @@ module control_DAT(input logic writeRead,
           reset_fisica<=1'b0;
           complete<=1'b0;
           IDLE_out<=1'b0;
+          blockCountFlip<=blockCount ;
+      //      blockCount<=blockCount ;
 
         end
       endcase
@@ -150,56 +162,70 @@ module control_DAT(input logic writeRead,
   //----------------------------logic block-------------------------------------------------------------logic  block---------------------------------------------̣\\\
   always @ ( * ) begin//Logica proximo estado
     next_state = 6'b000000;
+    blockCount=blockCountFlip;
   case(state)
     RESET : if (IDLE_in== 1'b1)begin/////////////////////////RESET
       next_state=IDLE;
+      blockCount=5'b00000 ;
     end
     else begin
 next_state=RESET;
+blockCount=5'b00000 ;
     end
 
 
 
     IDLE :if (newService== 1'b1) begin//////////////////////IDLE
       next_state=checkfifo;
+      blockCount=5'b00000 ;
     end
     else begin
 next_state=IDLE;
+blockCount=5'b00000 ;
     end
 
     checkfifo :if (fifo_full== 1'b1)  begin/////////////////////checkfifo
       next_state=solicitud;
+  //    blockCount=5'b00000 ;
     end
     else begin
+    //blockCount=5'b00000 ;
 next_state=checkfifo;
     end
     solicitud :if (recibido== 1'b1) begin/////////////////////////////solicitud
       next_state=waitResponse;
+      //blockCount=5'b00000 ;
     end
     else  begin
 next_state=solicitud;
+//blockCount=5'b00000 ;
     end
     waitResponse :if (transferComplete== 1'b1)  begin//////////////////////waitResponse
       next_state=waitIdle;
+  //    blockCount=5'b00000 ;
     end
     else  begin
 next_state=waitResponse;
+//blockCount=5'b00000 ;
     end
 
 
     waitIdle:////////////////////////////////////////////////waitIdle
      if (IDLE_in== 1'b1) begin
-       if ((multiblock==0)||(blockCount==blockSize+1)) begin
+       if ((multiblock==0)||(blockCountFlip==blockSize)) begin
           next_state=IDLE;
+blockCount=5'b00000 ;
         end
     else   begin
-        //  blockCount=blockCount+1;
+          blockCount=blockCountFlip+5'b00001;
+
           next_state=checkfifo;
 
         end
 
 end
 else  begin
+//blockCount=5'b00000 ;
 next_state=waitIdle;
 end
   /*      if (multiblock==1) begin
@@ -223,7 +249,7 @@ end*/
     end
   endcase
 
-
+//blockCount=5'b00000 ;
   end//////////////////////////////////end combinational block
 
 

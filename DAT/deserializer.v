@@ -18,17 +18,25 @@ module deserializer(
 	output reg [BITS-1:0] out;
 	reg [BITS_COUNTER-1:0] counter;	//we need to know which array item (out) to write on
 
-	always@(posedge reset) begin
+
+	//always@(posedge clk) begin
 	//if (reset==1'b1) begin
-
-
-		out = 32'b00000000000000000000000000000000;
-		counter = 8'b00000000;
-		complete = 1'b0;
+		//out <= 32'b00000000000000000000000000000000;
+		//counter <= 8'b00000000;
+		//complete <= 1'b0;
 	//end
-	end
+
+
+//	end
 
 	always@(posedge clk) begin
+
+	if (reset==1'b1) begin
+		out <= 32'b00000000000000000000000000000000;
+		counter <= 8'b00000000;
+//		complete <= 1'b0;
+	end
+	else  begin
 		if(enable) begin
 	   if (complete==1'b0) begin
 
@@ -36,6 +44,7 @@ module deserializer(
 				out[counter] <= in;
 				counter  <= counter + 1;	//next item
 				 end
+			end
 			end
 end
 

@@ -23,7 +23,7 @@ initial begin
 #0 multiblock =1;
 #0 reset=1;
 #0timeoutenable=0;
-#0 blockSize=4'b0010;
+#0 blockSize=4'b0001;
  #0 fifo_full =1;
  #0 timeout=0;
   #0 fromFifo_toPS=32'b11000000000000000000000000000011;
@@ -33,21 +33,21 @@ initial begin
 #40 writeRead=1;
 #0 newService=1;
 #50 newService=0;
-#700 fromSD_SP=1;
+#500 fromSD_SP=1;
 #20  fromSD_SP=0;
 #20  fromSD_SP=1;
-#20  fromSD_SP=0;
-#20  fromSD_SP=0;
+#20  fromSD_SP=1;
+#20  fromSD_SP=1;
 #20  fromSD_SP=1;
 #20  fromSD_SP=0;
-  #180fromFifo_toPS=32'b11000000000000001110000000000000;
+  #540fromFifo_toPS=32'b11000000000000001110000000000000;
   #80  fromSD_SP=1;
   #20  fromSD_SP=1;
   #20  fromSD_SP=1;
-  #20  fromSD_SP=0;
-  #20  fromSD_SP=0;
   #20  fromSD_SP=1;
-#20  fromSD_SP=0;
+  #20  fromSD_SP=1;
+  #20  fromSD_SP=1;
+#20  fromSD_SP=1;
 #9000 $finish;
 
 end

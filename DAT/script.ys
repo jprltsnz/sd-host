@@ -4,11 +4,11 @@ read_verilog -sv DAT.v
 hierarchy -check -top DAT
 
 
-proc; opt;
-fsm; opt; 
-memory; opt
+proc; #opt;
+fsm; #opt; 
+memory; #opt
 
-techmap; opt
+techmap; #opt
 
 dfflibmap -liberty cmos_cells.lib
 #home/isolis/Documentos/Digitales2/yosys-yosys-0.6/examples/cmos/cmos_cells.lib
