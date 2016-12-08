@@ -29,8 +29,10 @@ module register_set #(
 
    always @(posedge clk) begin
       if(reset) begin
-         for(j=0; j<10;j=j+1)
+         for(j=0; j<256;j=j+1)
            mem[j]=0;
+         data_out=0;
+         ack=0;
       end
 
       else begin
