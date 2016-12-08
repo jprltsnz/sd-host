@@ -72,7 +72,7 @@ end
   initial  begin
   //$display("\t\ttime,\tclk,\tmodo,\tenable,\tQ");
   //$monitor("%d,\t%b,\t%b,\t%b,\t%b",$time, clk,modo,enb,Q);
-  $dumpfile ("DAT1.vcd");
+  $dumpfile ("tests/vcd/DAT1.vcd");
   $dumpvars;
   end
 endmodule

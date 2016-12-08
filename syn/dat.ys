@@ -1,5 +1,4 @@
-
-read_verilog -sv DAT.v
+read_verilog -sv -Isrc/common src/dat/DAT.v
 
 hierarchy -check -top DAT
 
@@ -10,14 +9,14 @@ memory; #opt
 
 techmap; #opt
 
-dfflibmap -liberty cmos_cells.lib
+dfflibmap -liberty syn/cmos_cells.lib
 #home/isolis/Documentos/Digitales2/yosys-yosys-0.6/examples/cmos/cmos_cells.lib
 
 
-abc  -liberty  cmos_cells.lib
+abc  -liberty  syn/cmos_cells.lib
 #/home/isolis/Documentos/Digitales2/yosys-yosys-0.6/examples/cmos/cmos_cells.lib
-read_liberty cmos_cells.lib
+#read_liberty cmos_cells.lib
 clean
 
 
-write_verilog DATsyn.v 
+write_verilog -noattr src/synthetized/DAT.v 

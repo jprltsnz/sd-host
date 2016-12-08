@@ -32,7 +32,7 @@ SYN_DIR = src/synthetized
 VCD_DIR = tests/vcd
 VVP_DIR = tests/vvp
 
-test: $(VCD_DIR)/register_set.vcd
+test: $(VCD_DIR)/register_set.vcd $(VCD_DIR)/DAT1.vcd $(VCD_DIR)/DAT.vcd
 
 
 # Register set
@@ -47,8 +47,26 @@ $(SYN_DIR)/register_set_syn.v: src/register_set/register_set.v
 	(echo "\`include \"cmos_cells.v\""; cat src/synthetized/register_set.v) > $@
 	rm $(SYN_DIR)/register_set.v
 
+# Sd data
+$(VVP_DIR)/DAT.vvp: tests/dat/testbench.v tests/dat/probador.v src/dat/DAT.v
+	$(CC) $(FLAGS) -o $@ $< tests/dat/probador.v src/dat/DAT.v
 
 
+$(VCD_DIR)/DAT.vcd: $(VVP_DIR)/DAT.vvp
+	$(SIM) $< >> $(LOG)
+
+$(VVP_DIR)/DAT1.vvp: tests/dat/testbench.v tests/dat/probador1.v src/synthetized/DATsyn.v
+	$(CC) $(FLAGS) -o $@ $< tests/dat/probador1.v src/synthetized/DATsyn.v
+
+$(VCD_DIR)/DAT1.vcd: $(VVP_DIR)/DAT1.vvp
+	$(SIM) $< >> $(LOG)
+$(SYN_DIR)/DATsyn.v: src/dat/DAT.v
+	$(SYN) -s syn/dat.ys
+	(echo "\`include \"cmos_cells.v\""; cat src/synthetized/DAT.v) > $@
+	rm $(SYN_DIR)/DAT.v
+
+
+# Others
 clean:
 	rm -f $(VCD_DIR)/* $(VVP_DIR)/* $(LOG) $(SYN_DIR)/*
 
