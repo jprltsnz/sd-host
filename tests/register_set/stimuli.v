@@ -14,16 +14,20 @@ module stimuli(
 
    initial begin
       clk=0;
-      reset = 0;
+      //reset = 1;
       wnr = 0;
       req = 0;
+      reset = 1;
       address = 0;
-      data_in = 5;
+      data_in = $random;
+      #15 reset=0;
       #15 req = 3;
       #15 wnr =1;
       repeat (64) begin
          #20 address = address + 4;
+         wnr=1;
          data_in = $random;
+         #20 wnr=0;
       end
       #30 $finish;
    end
