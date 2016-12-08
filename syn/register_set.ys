@@ -1,0 +1,8 @@
+read_verilog -sv src/register_set/register_set.v
+hierarchy; proc; fsm; opt; memory; opt;
+techmap; opt
+dfflibmap -liberty syn/cmos_cells.lib
+abc -liberty syn/cmos_cells.lib
+clean
+rename -top register_set_syn
+write_verilog -noattr src/synthetized/register_set.v
