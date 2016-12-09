@@ -6,10 +6,10 @@ module test_deserializer;
     reg enable = 1;
     wire complete;		
     reg in = 0;			//serialized input
-	reg [7:0] framesize = 12;			//serialized input
+	reg [7:0] framesize = 11;			//serialized input
 	wire [135:0] out;	//deserialized data
 	
-	reg [135:0] input_values = 136'b1010101010101011010100100100101010100100101010101101010101010100101011010010101101101111010111010111010101010101101101010101101101010101; // test input data
+	reg [135:0] input_values = 136'b1010101010101011010100100100101010100100101010101101010101010100101011010010101101101111010111010111010101010101101101010101101101010100; // test input data
 	reg [5:0] counter = 0;
 	
     initial begin

@@ -9,11 +9,13 @@ module sd_ctrl(reset,
 			   deserialize_complete,
 			   enable_serializer,
 			   enable_deserializer,
-			   reset_serializer
+			   reset_serializer,
+			   big_response,
+			   frame_deserializer
 			   
 			  );
-	input reset, clock, deserialize_complete, serialize_complete, emmit_command, deserialize_complete;
-	output reg enable_serializer, enable_deserializer, reset_serializer, response_ready;
+	input reset, clock, deserialize_complete, serialize_complete, emmit_command, deserialize_complete, big_response;
+	output reg enable_serializer, enable_deserializer, reset_serializer, response_ready, frame_deserializer;
 	input [135:0] sd_in;
 	output [47:0] sd_out;
 	
@@ -44,6 +46,7 @@ module sd_ctrl(reset,
 				end
 			
 			HOST_TO_SD_TRANSF:
+				frame_deserializer <= big_response ? 135: 47;
 				enable_serializer <= 1;		// start serializing
 				if(serialize_complete) begin
 					state <= WAIT_RESPONSE;

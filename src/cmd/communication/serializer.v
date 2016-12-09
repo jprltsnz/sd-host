@@ -13,23 +13,24 @@ module serializer(
 	input clk, reset, enable;
 	input [BITS-1:0] in;
 	
-	output reg out;
+	output reg out, complete;
 	reg [BITS_COUNTER-1:0] counter;	//we need to know which array item (in) to read from
 		
 	always@(posedge reset) begin
-		counter = 0;
+		counter = BITS - 1;
+		complete = 0;
 	end
 	
 	
 	always@(posedge clk) begin
 		if(enable) begin	//when counter gets to limit, it'll stop counting until it's reset
-			if(counter==BITS) begin
+			if(counter==0) begin
 				complete <= 1;
 			end else begin	
 				out <= in[counter];
 			end
 			if(~reset) begin			//as long we're not resetting the counter
-				counter = counter + 1;	//next item
+				counter = counter - 1;	//next item
 			end
 		end
 	end
