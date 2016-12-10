@@ -1,0 +1,90 @@
+* 10-10-16
+- Se acordó leer el estandar del SD-Host para tener una idea de
+  como repartirlo
+
+* 14-10-16
+- Se asignó a Javier Peralta como coordinador y encargado de la
+  bitácora y el plan de trabajo.
+- Se asignaron los bloques. Se decidió que bloque que se ve ligeramente
+  más simple, los registros se le asignarán a Javier Peralta para
+  balancear el trabajo extra de ser el coordinador.
+
+- Los demás bloques se asignaron mediante el ofrecimiento voluntario de
+  los miembros del grupo:
+- a Mario Zamora se le asignó el bloque de DAT control
+- a Fabián se le asigno el bloque de CMD control
+- a Abiel se se asignó el DMA
+
+- Se acordó que cada quién va a leer con mayor detalle su bloque y
+  preparará el plan detallado como lo van a implementar
+
+* 01-11-16
+- Se aseguro que todos tengan el los acceso al git publico, las
+  políticas para el git que se acordaron son las siguientes, cada uno
+  va a hacer un branch donde van trabajando, cuando un alguna parte
+  importante este lista se hace un merge al master. Las reglas para
+  el master son las siguientes: El código en el master debe de
+  compilar sin errores. No es necesario que todo este implementado, pero
+  la funcionalidad que si esta implementada debe de funcionar
+  correctamente. Esto permite que los demás puedan probar su código
+  contra el de los demás sin necesidad de preocuparse por errores de
+  compilación.
+- Se acuerda usar el tipo logic en vez de reg y wire porque Icarus y
+  yosys soportan esto. Otras operaciones y expresiones de
+  SistemVerilog no son soportadas por algunas de las dos herramientas,
+  en general Yosys tiene más soporte de SystemVerilog que Icarus
+- Se coordino una interfaz para registros, cada miembro de los otros
+  bloque debe detallar cuales son los registros que ocupa escribir y
+  pasárselos a Javier para que implemente el código necesario, para la
+  lectura de los registros se dará una interfaz que de los valores de
+  todos los registros y los otros bloques nada más los usan como una
+  entrada constante
+- Mario queda encargado de definir como es el buffer
+- Se acordo usar un DMA de 32 bits
+
+* 6-11-16
+- Esta semana marca la primera fecha en la cual el profesor sugirió
+  tener los bloques individuales listos. En el repositorio de código
+  solo se encuentra subido una versión básica del bloque de registros.
+- Abiel y Mario afirman que van a subir sus bloques en el transcurso
+  de la semana.
+- Fabián todavía esta leyendo, hay partes de su bloque que no entiende
+  muy bien
+
+* 13-11-16
+- Se subió un versión del bloque de los registros que compila simula y
+  sintetiza correctamente, el 85% de la funcionalidad esta hecha. Le
+  faltan las interfaces de escritura de los demás bloques (todavía no
+  se han enviado que registros ocupa escribir cada bloque) y hace
+  falta un bloque que le asigne nombres significativos a la salida con
+  todos los valores de los registros para los demás bloques.
+
+* 25-11-16
+- Sigue sin haber nada de los bloques DAT y DMA y poco del CMD en el
+ repositorio.
+- Todos asegura sus bloques esta casi listos y se comprometen a subirlo pronto.
+
+* 28-11-16
+- Se sube una versión casi terminada del bloque de CMD control, hace
+  falta un sub-bloque funcional.
+
+* 30-11-16
+- Se subió una versión completa del bloque DAT
+
+* 1-12-16
+- Se encontraron unos bugs en la sintetización de los serializadores y
+  deserializadores del proyecto que no ocurren en la versión
+  conductual. Se ocupo re-escribir estos módulos y parte del modulo
+  DAT
+- Todavía no hay modulo de DMA en el git, y a CMD le falta un bloque
+  funcional interno.
+
+* 4-12-16
+- Se habilitan documentos con la estructural básica para ir escribiendo
+  el reporte, la presentación, las especificaciones de cada bloque y
+  horas en cada tarea de cada uno al plan de trabajo.
+* 8-12-16
+- Abiel informa que dejara el curso
+
+#  LocalWords:  sintetización serializadores conductual
+#  LocalWords:  deserializadores
