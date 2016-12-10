@@ -5,20 +5,17 @@
 `include "serializer.v"
 // Code your design here
 //////////////////////////////////////////////////////////////////////////////////////////////////7
-//    Module: control_DAT
+//    Module: DAT
 //    Projecto: SD Host
 //
-// Descripcion: Modulo de control  para el bloque DAT del SD Host , este  modulo controla las señales para  solicitud de un nuevo servicio , escritura y lectura
-//  hacia la capa  fisica que se encarga de leer  y escribir desde  y hacia el fifo y la tarjeda SD
-//    Autor: Mario Zamora  Rivera
-//
+// Descripcion:Este modulo integra todos los sub bloques , conecta el  control con la capa fisica . existen salidas que  este nivel estan vacias pero en niveles internos estas estan siendo usadas.
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 module DAT(
-  input logic writeRead,
-  input logic newService,
-  input logic multiblock,
+  input logic writeRead,// señal writeRead de  registro
+  input logic newService, //señal nuevo servicio del DMA
+  input logic multiblock, //
   input logic timeoutenable,
   input logic reset,
   input logic[3:0] blockSize,
@@ -26,15 +23,15 @@ module DAT(
   input logic  [15:0] timeout ,
   input logic SDclock,
   input logic clock,
-  input logic [31:0] fromFifo_toPS,
-  input logic  fromSD_SP,
-  output  wire complete,
-  output wire toSD_PS,
+  input logic [31:0] fromFifo_toPS,// datos desde el fifo hacia el  serializador
+  input logic  fromSD_SP, //datos desde la SD hacia el deserializdor 
+  output  wire complete, // señal deproceso  terminado hacia el DAT
+  output wire toSD_PS, //  salida del serializador hacia  la SD
   output wire  padState,// entrada o salida del pad
   output wire padEnable, //habilita el oad
-  output wire timeOutFail,
+  output wire timeOutFail, //  si falla el time out se activa esta salida
   output wire [31:0] fromSP_toFifo,
-  output wire pop,
+  output wire pop, //  
   output wire push,
   output wire IDLE_out
 );
