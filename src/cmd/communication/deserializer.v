@@ -2,7 +2,7 @@ module deserializer(
 	clk, 		//serialized data proper clock
 	enable, 	//suspend while enable on low
 	reset, 		//set output to zero and reset counter to 0 on high
-	framesize, 	//number of bits to be deserialized
+	framesize, 	//number of bits to be deserialized - 1
 	in, 		//serialized data
 	out, 		//deserialized data
 	complete	//reset counter to 0 and hold out's data while high
@@ -10,6 +10,7 @@ module deserializer(
 	
 	parameter BITS = 136;		//size of deserializer
 	parameter BITS_COUNTER = 8;	//size of counter, must be at least log2(BITS)
+	parameter COUNTER_MAX = 8'hFF;	//max possible value
 	
 	input clk, enable, reset, in;
 	input [BITS_COUNTER-1:0] framesize;
@@ -20,7 +21,7 @@ module deserializer(
 		
 	always@(posedge reset) begin
 		out = 0;
-		counter = 0;
+		counter = framesize;
 		complete = 0;
 	end
 	
@@ -29,7 +30,7 @@ module deserializer(
 		if(enable) begin
 			if(~complete) begin	//as long there's not any reset state, count
 				out[counter] <= in;
-				counter = counter + 1;	//next item
+				counter = counter - 1;	//next item
 			end
 		end else begin
 			complete = 0;
@@ -37,14 +38,14 @@ module deserializer(
 	end
 	
 	always@(counter) begin
-		if(counter == framesize) begin	//all bits have been read
+		if(counter == COUNTER_MAX) begin	//all bits have been read
 			complete = 1;
 		end
 		
 	end
 	
 	always@(complete) begin
-		counter = 0;	//this way there's no need to reset every time we start a transaction (resetting all out bits consumes power)
+		counter = framesize;	//this way there's no need to reset every time we start a transaction (resetting all out bits consumes power)
 	end
 	
 endmodule
